@@ -11,44 +11,12 @@ body {
     margin: 0;
 }
 
-.main-container {
-    width: 100%;
-    max-width: 520px;
-    padding: 20px;
-    box-sizing: border-box; /* 確保 padding 不會增加總寬度 */
-}
-
+.main-container { width: 100%; max-width: 520px; padding: 20px; box-sizing: border-box; }
 .main-nav { display: flex; margin-bottom: 20px; background-color: rgba(255, 255, 255, 0.3); border-radius: 15px; padding: 5px; }
-.nav-btn {
-    flex: 1;
-    padding: 10px 20px;
-    font-size: 18px;
-    font-family: 'Baloo 2', cursive;
-    border: none;
-    background-color: transparent;
-    color: #34495e;
-    cursor: pointer;
-    border-radius: 12px;
-    transition: all 0.3s ease;
-}
+.nav-btn { flex: 1; padding: 10px 20px; font-size: 18px; font-family: 'Baloo 2', cursive; border: none; background-color: transparent; color: #34495e; cursor: pointer; border-radius: 12px; transition: all 0.3s ease; }
 .nav-btn.active { background-color: #fff; color: #2980b9; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
-
 .page-section.hidden { display: none; }
-
-.container {
-    background-color: rgba(255, 255, 255, 0.95);
-    padding: 30px;
-    border-radius: 20px;
-    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
-    text-align: center;
-    width: 100%;
-    min-height: 600px;
-    border: 3px solid white;
-    position: relative;
-    overflow: hidden;
-    box-sizing: border-box;
-}
-
+.container { background-color: rgba(255, 255, 255, 0.95); padding: 30px; border-radius: 20px; box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15); text-align: center; width: 100%; min-height: 600px; border: 3px solid white; position: relative; overflow: hidden; box-sizing: border-box; }
 h1 { color: #2c3e50; font-size: 36px; margin-top: 0; }
 .options { margin-bottom: 20px; display: flex; justify-content: center; gap: 10px; }
 .option-btn { font-family: 'Baloo 2', cursive; font-size: 24px; width: 60px; height: 60px; border-radius: 50%; border: 2px solid #bdc3c7; background-color: #ecf0f1; color: #7f8c8d; cursor: pointer; transition: all 0.2s ease; }
@@ -81,64 +49,53 @@ h1 { color: #2c3e50; font-size: 36px; margin-top: 0; }
 .play-btn:hover { background-color: #d35400; }
 #player-container { width: 100%; aspect-ratio: 16 / 9; margin-bottom: 20px; background-color: #000; border-radius: 15px; overflow: hidden; }
 #youtube-player { width: 100%; height: 100%; }
-.table-grid { display: grid; grid-template-columns: repeat(9, 1fr); gap: 5px; }
+
+/* --- 【核心修改處】--- */
+/* 新增：滑動容器的樣式 */
+.table-scroll-wrapper {
+    width: 100%;
+    overflow-x: auto; /* 關鍵！允許水平滑動 */
+    -webkit-overflow-scrolling: touch; /* 在 iOS 上提供流暢的滑動體驗 */
+}
+
+/* 讓捲軸變得好看一點 (在支援的瀏覽器中) */
+.table-scroll-wrapper::-webkit-scrollbar {
+    height: 8px;
+}
+.table-scroll-wrapper::-webkit-scrollbar-thumb {
+    background: #bdc3c7;
+    border-radius: 4px;
+}
+.table-scroll-wrapper::-webkit-scrollbar-thumb:hover {
+    background: #95a5a6;
+}
+
+.table-grid {
+    display: grid;
+    grid-template-columns: repeat(9, 1fr);
+    gap: 5px;
+    min-width: 450px; /* 關鍵！設定一個最小寬度，確保表格不會被過度擠壓 */
+}
+
 .table-cell { background-color: #ecf0f1; border-radius: 8px; padding: 8px 2px; font-size: 13px; color: #34495e; display: flex; align-items: center; justify-content: center; min-height: 25px; }
 .table-cell:hover { background-color: #dbe4e6; }
 
-/* ====[ 新增：響應式設計 (手機與平板直向版面) ]==== */
+/* 響應式設計 (手機與平板直向版面) */
 @media (max-width: 600px) {
-    body {
-        /* 在手機上不需要額外的 body padding */
-        padding: 0;
-    }
+    body { padding: 0; }
+    .main-container { padding: 10px; max-width: 100%; }
+    .container { padding: 15px; }
+    h1 { font-size: 28px; }
+    .option-btn { width: 50px; height: 50px; font-size: 20px; }
+    .math-problem { font-size: 48px; }
+    #answer-input { height: 70px; font-size: 40px; }
+    #keypad { gap: 8px; }
+    .keypad-btn { height: 55px; font-size: 22px; }
+    .icon-group { width: 120px; font-size: 24px; }
     
-    .main-container {
-        /* 讓主容器佔滿螢幕寬度，並減少邊距 */
-        padding: 10px;
-        max-width: 100%;
-    }
-
-    .container {
-        /* 減少白邊的內距 */
-        padding: 15px;
-    }
-
-    h1 {
-        font-size: 28px; /* 縮小主標題 */
-    }
-
-    .option-btn {
-        /* 縮小頂部的模式選擇按鈕 */
-        width: 50px;
-        height: 50px;
-        font-size: 20px;
-    }
-
-    .math-problem {
-        font-size: 48px; /* 縮小題目數字 */
-    }
-    
-    #answer-input {
-        height: 70px; /* 縮小答案輸入框 */
-        font-size: 40px;
-    }
-
-    #keypad {
-        gap: 8px; /* 縮小鍵盤按鈕間距 */
-    }
-
-    .keypad-btn {
-        height: 55px; /* 縮小鍵盤按鈕高度 */
-        font-size: 22px;
-    }
-
-    .icon-group {
-        width: 120px; /* 縮小圖示顯示區塊 */
-        font-size: 24px;
-    }
-
+    /* 我們不再需要縮小乘數表字體，因為它可以滑動了 */
     .table-cell {
-        font-size: 11px; /* 縮小乘數表字體 */
-        padding: 5px 1px;
+        font-size: 14px; /* 恢復到較清晰的字體大小 */
+        padding: 8px 5px;
     }
 }
