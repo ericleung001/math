@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>數學小練習</title>
+    <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div class="main-container">
+        <nav class="main-nav">
+            <button id="nav-quiz" class="nav-btn active">數學測驗</button>
+            <button id="nav-table" class="nav-btn">乘數表學習</button>
+        </nav>
+
+        <section id="quiz-section" class="page-section">
+            <div class="container">
+                <div id="end-screen" class="hidden">
+                    <h2>做得好！</h2>
+                    <p>你完成了 10 條題目！</p>
+                    <p class="final-score">總分: <span id="final-score-value"></span></p>
+                    <button id="restart-btn">重新開始</button>
+                </div>
+                <div id="game-screen">
+                    <h1>數學小練習</h1>
+                    <div class="options">
+                        <button class="option-btn" data-op="add">+</button>
+                        <button class="option-btn" data-op="subtract">-</button>
+                        <button class="option-btn" data-op="multiply">×</button>
+                        <button class="option-btn" data-op="divide">÷</button>
+                        <button class="option-btn active" data-op="random">隨機</button>
+                    </div>
+                    <div class="stats-container">
+                        <div class="score-board">得分: <span id="score">0</span></div>
+                        <div class="progress-tracker">題目: <span id="question-count">1</span> / 10</div>
+                    </div>
+                    <div class="math-problem-container">
+                        <div class="math-problem">
+                            <span id="num1"></span><span id="operator"></span><span id="num2"></span><span>=</span>
+                        </div>
+                        <div class="icon-display">
+                            <div id="icons1" class="icon-group"></div>
+                            <div id="op-symbol" class="icon-group"></div>
+                            <div id="icons2" class="icon-group"></div>
+                        </div>
+                    </div>
+                    <input type="text" id="answer-input" placeholder="?" readonly>
+                    <div id="keypad">
+                        <button class="keypad-btn" data-key="7">7</button><button class="keypad-btn" data-key="8">8</button><button class="keypad-btn" data-key="9">9</button><button class="keypad-btn" data-key="clear">清除</button><button class="keypad-btn" data-key="4">4</button><button class="keypad-btn" data-key="5">5</button><button class="keypad-btn" data-key="6">6</button><button class="keypad-btn" data-key="backspace">←</button><button class="keypad-btn" data-key="1">1</button><button class="keypad-btn" data-key="2">2</button><button class="keypad-btn" data-key="3">3</button><button class="keypad-btn check" data-key="check">✔</button><button class="keypad-btn" data-key="0">0</button>
+                    </div>
+                    <p id="feedback"></p>
+                </div>
+            </div>
+        </section>
+
+        <section id="table-section" class="page-section hidden">
+            <div class="container">
+                <h1>九因歌乘數表</h1>
+                <button id="play-chant-btn" class="play-btn">🎵 播放九因歌</button>
+                
+                <div id="player-container">
+                    <div id="youtube-player"></div>
+                </div>
+
+                <div id="multiplication-table" class="table-grid">
+                    </div>
+                </div>
+        </section>
+    </div>
+
+    <script async src="https://www.youtube.com/iframe_api"></script>
+    <script src="script.js"></script>
+</body>
+</html>

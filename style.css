@@ -1,0 +1,144 @@
+/* Google Font Import */
+@import url('https://fonts.googleapis.com/css2?family=Baloo+2:wght@700&display=swap');
+
+body {
+    font-family: 'Baloo 2', cursive;
+    background: linear-gradient(120deg, #84fab0 0%, #8fd3f4 100%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-height: 100vh;
+    margin: 0;
+}
+
+.main-container {
+    width: 100%;
+    max-width: 520px;
+    padding: 20px;
+    box-sizing: border-box; /* 確保 padding 不會增加總寬度 */
+}
+
+.main-nav { display: flex; margin-bottom: 20px; background-color: rgba(255, 255, 255, 0.3); border-radius: 15px; padding: 5px; }
+.nav-btn {
+    flex: 1;
+    padding: 10px 20px;
+    font-size: 18px;
+    font-family: 'Baloo 2', cursive;
+    border: none;
+    background-color: transparent;
+    color: #34495e;
+    cursor: pointer;
+    border-radius: 12px;
+    transition: all 0.3s ease;
+}
+.nav-btn.active { background-color: #fff; color: #2980b9; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+
+.page-section.hidden { display: none; }
+
+.container {
+    background-color: rgba(255, 255, 255, 0.95);
+    padding: 30px;
+    border-radius: 20px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+    text-align: center;
+    width: 100%;
+    min-height: 600px;
+    border: 3px solid white;
+    position: relative;
+    overflow: hidden;
+    box-sizing: border-box;
+}
+
+h1 { color: #2c3e50; font-size: 36px; margin-top: 0; }
+.options { margin-bottom: 20px; display: flex; justify-content: center; gap: 10px; }
+.option-btn { font-family: 'Baloo 2', cursive; font-size: 24px; width: 60px; height: 60px; border-radius: 50%; border: 2px solid #bdc3c7; background-color: #ecf0f1; color: #7f8c8d; cursor: pointer; transition: all 0.2s ease; }
+.option-btn:hover { transform: translateY(-3px); box-shadow: 0 4px 8px rgba(0,0,0,0.1); }
+.option-btn.active { background-color: #3498db; color: white; border-color: #3498db; }
+.stats-container { display: flex; justify-content: space-around; margin-bottom: 15px; }
+.score-board, .progress-tracker { font-size: 22px; color: #34495e; }
+#score, #question-count { font-weight: bold; color: #e67e22; font-size: 26px; }
+.math-problem { font-size: 60px; font-weight: bold; color: #2980b9; }
+.icon-display { display: flex; justify-content: center; align-items: center; margin-top: 10px; min-height: 80px; }
+.icon-group { display: flex; flex-wrap: wrap; justify-content: center; align-items: center; width: 180px; font-size: 30px; line-height: 1.2; }
+#op-symbol { width: 50px; font-size: 40px; color: #34495e; }
+#answer-input { font-family: 'Baloo 2', cursive; width: 100%; height: 80px; font-size: 50px; text-align: center; border: 3px solid #bdc3c7; border-radius: 15px; margin-top: 15px; margin-bottom: 20px; box-sizing: border-box; background-color: #f8f9fa; color: #495057; }
+#answer-input:focus { outline: none; }
+#keypad { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-bottom: 15px; }
+.keypad-btn { font-family: 'Baloo 2', cursive; font-size: 24px; height: 60px; border: none; border-radius: 12px; background-color: #ffffff; box-shadow: 0 4px 6px rgba(0,0,0,0.1); cursor: pointer; transition: all 0.2s ease; color: #34495e; }
+.keypad-btn:active { transform: scale(0.95); box-shadow: 0 2px 3px rgba(0,0,0,0.1); }
+.keypad-btn.check { grid-row: span 2; background-color: #2ecc71; color: white; font-size: 32px; }
+.keypad-btn[data-key="clear"], .keypad-btn[data-key="backspace"] { background-color: #ecf0f1; font-size: 18px; }
+#feedback { margin-top: 5px; font-size: 22px; font-weight: bold; height: 30px; }
+#end-screen { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(255, 255, 255, 0.9); display: flex; flex-direction: column; justify-content: center; align-items: center; z-index: 10; transition: opacity 0.5s ease; }
+#end-screen.hidden { opacity: 0; pointer-events: none; }
+#end-screen h2 { font-size: 48px; color: #2c3e50; margin: 0; }
+#end-screen p { font-size: 24px; color: #34495e; }
+.final-score { font-size: 32px; font-weight: bold; }
+#final-score-value { color: #e67e22; }
+#restart-btn { font-family: 'Baloo 2', cursive; font-size: 22px; padding: 15px 40px; border: none; border-radius: 12px; background-color: #3498db; color: white; cursor: pointer; margin-top: 20px; transition: background-color 0.2s ease; }
+#restart-btn:hover { background-color: #2980b9; }
+.play-btn { font-family: 'Baloo 2', cursive; font-size: 20px; padding: 12px 25px; margin: 10px 0 25px 0; border: none; border-radius: 12px; background-color: #e67e22; color: white; cursor: pointer; transition: background-color 0.2s ease; }
+.play-btn:hover { background-color: #d35400; }
+#player-container { width: 100%; aspect-ratio: 16 / 9; margin-bottom: 20px; background-color: #000; border-radius: 15px; overflow: hidden; }
+#youtube-player { width: 100%; height: 100%; }
+.table-grid { display: grid; grid-template-columns: repeat(9, 1fr); gap: 5px; }
+.table-cell { background-color: #ecf0f1; border-radius: 8px; padding: 8px 2px; font-size: 13px; color: #34495e; display: flex; align-items: center; justify-content: center; min-height: 25px; }
+.table-cell:hover { background-color: #dbe4e6; }
+
+/* ====[ 新增：響應式設計 (手機與平板直向版面) ]==== */
+@media (max-width: 600px) {
+    body {
+        /* 在手機上不需要額外的 body padding */
+        padding: 0;
+    }
+    
+    .main-container {
+        /* 讓主容器佔滿螢幕寬度，並減少邊距 */
+        padding: 10px;
+        max-width: 100%;
+    }
+
+    .container {
+        /* 減少白邊的內距 */
+        padding: 15px;
+    }
+
+    h1 {
+        font-size: 28px; /* 縮小主標題 */
+    }
+
+    .option-btn {
+        /* 縮小頂部的模式選擇按鈕 */
+        width: 50px;
+        height: 50px;
+        font-size: 20px;
+    }
+
+    .math-problem {
+        font-size: 48px; /* 縮小題目數字 */
+    }
+    
+    #answer-input {
+        height: 70px; /* 縮小答案輸入框 */
+        font-size: 40px;
+    }
+
+    #keypad {
+        gap: 8px; /* 縮小鍵盤按鈕間距 */
+    }
+
+    .keypad-btn {
+        height: 55px; /* 縮小鍵盤按鈕高度 */
+        font-size: 22px;
+    }
+
+    .icon-group {
+        width: 120px; /* 縮小圖示顯示區塊 */
+        font-size: 24px;
+    }
+
+    .table-cell {
+        font-size: 11px; /* 縮小乘數表字體 */
+        padding: 5px 1px;
+    }
+}
