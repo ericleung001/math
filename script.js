@@ -1,258 +1,418 @@
-// ====[ 1. 頁面導覽和通用元素 ]====
-const navQuizBtn = document.getElementById('nav-quiz');
-const navTableBtn = document.getElementById('nav-table');
-const quizSection = document.getElementById('quiz-section');
-const tableSection = document.getElementById('table-section');
-const playChantBtn = document.getElementById('play-chant-btn');
-const multiplicationTable = document.getElementById('multiplication-table');
-const youtubePlayerDiv = document.getElementById('youtube-player');
+/* Google Font Import */
+@import url('https://fonts.googleapis.com/css2?family=Baloo+2:wght@700&display=swap');
 
-// ====[ 2. 測驗 App 相關元素和變數 ]====
-const num1El = document.getElementById('num1');
-const num2El = document.getElementById('num2');
-const operatorEl = document.getElementById('operator');
-const answerInput = document.getElementById('answer-input');
-const feedbackEl = document.getElementById('feedback');
-const scoreEl = document.getElementById('score');
-const optionBtns = document.querySelectorAll('.option-btn');
-const icons1El = document.getElementById('icons1');
-const icons2El = document.getElementById('icons2');
-const opSymbolEl = document.getElementById('op-symbol');
-const keypad = document.getElementById('keypad');
-const questionCountEl = document.getElementById('question-count');
-const gameScreen = document.getElementById('game-screen');
-const endScreen = document.getElementById('end-screen');
-const finalScoreValueEl = document.getElementById('final-score-value');
-const restartBtn = document.getElementById('restart-btn');
-
-let score = 0, correctAnswer, currentOperation = 'random', questionCounter = 0;
-const QUESTIONS_PER_ROUND = 10;
-const encouragements = [ '太棒了！', '你真聰明！', '完全正確！', '繼續加油！', '做得好！', '一百分！' ];
-const icons = ['🚗', '🍎', '⭐', '🎈', '🐶', '⚽', '🍓', '🌻', '🐠', '🦋'];
-let player;
-const YOUTUBE_VIDEO_ID = 'D06jY5Y7n9k';
-
-// ====[ 3. 核心邏輯函式 ]====
-
-// --- 3.1 YouTube 播放器 API 回呼函式 ---
-function onYouTubeIframeAPIReady() {
-    player = new YT.Player('youtube-player', {
-        height: '100%',
-        width: '100%',
-        videoId: YOUTUBE_VIDEO_ID,
-        playerVars: {
-            'playsinline': 1,
-            'autoplay': 0,
-            'controls': 1,
-            'rel': 0,
-            'modestbranding': 1
-        },
-        events: {
-            'onReady': onPlayerReady,
-            'onStateChange': onPlayerStateChange
-        }
-    });
+body {
+    font-family: 'Baloo 2', cursive;
+    background: linear-gradient(120deg, #84fab0 0%, #8fd3f4 100%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-height: 100vh;
+    margin: 0;
 }
 
-function onPlayerReady(event) {
-    console.log('YouTube 播放器已準備就緒！');
+.main-container {
+    width: 100%;
+    max-width: 520px;
+    padding: 20px;
+    box-sizing: border-box;
 }
 
-function onPlayerStateChange(event) {
-    if (event.data === YT.PlayerState.PLAYING) {
-        playChantBtn.textContent = '⏸️ 暫停播放';
-    } else if (event.data === YT.PlayerState.PAUSED || event.data === YT.PlayerState.ENDED) {
-        playChantBtn.textContent = '🎵 播放九因歌';
+.main-nav {
+    display: flex;
+    margin-bottom: 20px;
+    background-color: rgba(255, 255, 255, 0.3);
+    border-radius: 15px;
+    padding: 5px;
+}
+.nav-btn {
+    flex: 1;
+    padding: 10px 20px;
+    font-size: 18px;
+    font-family: 'Baloo 2', cursive;
+    border: none;
+    background-color: transparent;
+    color: #34495e;
+    cursor: pointer;
+    border-radius: 12px;
+    transition: all 0.3s ease;
+}
+.nav-btn.active {
+    background-color: #fff;
+    color: #2980b9;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+}
+
+.page-section.hidden {
+    display: none;
+}
+
+.container {
+    background-color: rgba(255, 255, 255, 0.95);
+    padding: 30px;
+    border-radius: 20px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+    text-align: center;
+    width: 100%;
+    min-height: 600px;
+    border: 3px solid white;
+    position: relative;
+    overflow: hidden;
+    box-sizing: border-box;
+}
+
+h1 {
+    color: #2c3e50;
+    font-size: 36px;
+    margin-top: 0;
+}
+
+.options {
+    margin-bottom: 20px;
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+}
+.option-btn {
+    font-family: 'Baloo 2', cursive;
+    font-size: 24px;
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    border: 2px solid #bdc3c7;
+    background-color: #ecf0f1;
+    color: #7f8c8d;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+.option-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+.option-btn.active {
+    background-color: #3498db;
+    color: white;
+    border-color: #3498db;
+}
+
+.stats-container {
+    display: flex;
+    justify-content: space-around;
+    margin-bottom: 15px;
+}
+.score-board, .progress-tracker {
+    font-size: 22px;
+    color: #34495e;
+}
+#score, #question-count {
+    font-weight: bold;
+    color: #e67e22;
+    font-size: 26px;
+}
+
+.math-problem {
+    font-size: 60px;
+    font-weight: bold;
+    color: #2980b9;
+}
+.icon-display {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 10px;
+    min-height: 80px;
+}
+.icon-group {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    width: 180px;
+    font-size: 30px;
+    line-height: 1.2;
+}
+#op-symbol {
+    width: 50px;
+    font-size: 40px;
+    color: #34495e;
+}
+
+#answer-input {
+    font-family: 'Baloo 2', cursive;
+    width: 100%;
+    height: 80px;
+    font-size: 50px;
+    text-align: center;
+    border: 3px solid #bdc3c7;
+    border-radius: 15px;
+    margin-top: 15px;
+    margin-bottom: 20px;
+    box-sizing: border-box;
+    background-color: #f8f9fa;
+    color: #495057;
+}
+#answer-input:focus {
+    outline: none;
+}
+
+#keypad {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
+    margin-bottom: 15px;
+}
+.keypad-btn {
+    font-family: 'Baloo 2', cursive;
+    font-size: 24px;
+    height: 60px;
+    border: none;
+    border-radius: 12px;
+    background-color: #ffffff;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    cursor: pointer;
+    transition: all 0.2s ease;
+    color: #34495e;
+}
+.keypad-btn:active {
+    transform: scale(0.95);
+    box-shadow: 0 2px 3px rgba(0,0,0,0.1);
+}
+.keypad-btn.check {
+    grid-row: span 2;
+    background-color: #2ecc71;
+    color: white;
+    font-size: 32px;
+}
+.keypad-btn[data-key="clear"], .keypad-btn[data-key="backspace"] {
+    background-color: #ecf0f1;
+    font-size: 18px;
+}
+
+#feedback {
+    margin-top: 5px;
+    font-size: 22px;
+    font-weight: bold;
+    height: 30px;
+}
+
+#end-screen {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(255, 255, 255, 0.9);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    z-index: 10;
+    transition: opacity 0.5s ease;
+}
+#end-screen.hidden {
+    opacity: 0;
+    pointer-events: none;
+}
+#end-screen h2 { font-size: 48px; color: #2c3e50; margin: 0; }
+#end-screen p { font-size: 24px; color: #34495e; }
+.final-score { font-size: 32px; font-weight: bold; }
+#final-score-value { color: #e67e22; }
+#restart-btn, .play-btn {
+    font-family: 'Baloo 2', cursive;
+    font-size: 22px;
+    padding: 15px 40px;
+    border: none;
+    border-radius: 12px;
+    background-color: #3498db;
+    color: white;
+    cursor: pointer;
+    margin-top: 20px;
+    transition: background-color 0.2s ease;
+}
+#restart-btn:hover, .play-btn:hover {
+    background-color: #2980b9;
+}
+
+#play-chant-btn {
+    font-size: 20px;
+    padding: 12px 25px;
+    margin: 10px 0 25px 0;
+    background-color: #e67e22;
+}
+#play-chant-btn:hover {
+    background-color: #d35400;
+}
+
+#player-container {
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    margin-bottom: 20px;
+    background-color: #000;
+    border-radius: 15px;
+    overflow: hidden;
+}
+#youtube-player {
+    width: 100%;
+    height: 100%;
+}
+
+.table-scroll-wrapper {
+    width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+}
+.table-scroll-wrapper::-webkit-scrollbar { height: 8px; }
+.table-scroll-wrapper::-webkit-scrollbar-thumb { background: #bdc3c7; border-radius: 4px; }
+.table-scroll-wrapper::-webkit-scrollbar-thumb:hover { background: #95a5a6; }
+
+.table-grid {
+    display: grid;
+    grid-template-columns: repeat(9, 1fr);
+    gap: 5px;
+    min-width: 450px;
+}
+.table-cell {
+    background-color: #ecf0f1;
+    border-radius: 8px;
+    padding: 8px 2px;
+    font-size: 13px;
+    color: #34495e;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 25px;
+}
+.table-cell:hover {
+    background-color: #dbe4e6;
+}
+
+.setting-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+    margin-top: 30px;
+    padding: 20px;
+    background-color: #f8f9fa;
+    border-radius: 15px;
+}
+.setting-item label {
+    font-size: 20px;
+    color: #34495e;
+    font-weight: bold;
+}
+.setting-item input[type="number"] {
+    font-family: 'Baloo 2', cursive;
+    font-size: 36px;
+    width: 150px;
+    text-align: center;
+    border: 2px solid #bdc3c7;
+    border-radius: 10px;
+    padding: 10px;
+    box-sizing: border-box;
+}
+#save-status {
+    font-size: 18px;
+    color: #27ae60;
+    font-weight: bold;
+    height: 25px;
+}
+
+.passcode-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.6);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 20;
+    opacity: 1;
+    transition: opacity 0.3s ease;
+}
+.passcode-overlay.hidden {
+    opacity: 0;
+    pointer-events: none;
+}
+.passcode-box {
+    background-color: white;
+    padding: 30px;
+    border-radius: 15px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+    text-align: center;
+    width: 300px;
+}
+.passcode-box h3 {
+    margin-top: 0;
+    font-size: 22px;
+    color: #34495e;
+}
+#passcode-input {
+    font-family: 'Baloo 2', cursive;
+    font-size: 36px;
+    letter-spacing: 10px;
+    width: 100%;
+    text-align: center;
+    border: 2px solid #bdc3c7;
+    border-radius: 10px;
+    padding: 10px;
+    box-sizing: border-box;
+    margin-top: 15px;
+}
+.error-msg {
+    color: #e74c3c;
+    font-weight: bold;
+    height: 20px;
+    margin: 10px 0;
+}
+
+
+/* ====[ 響應式設計 (手機與平板直向版面) ]==== */
+@media (max-width: 600px) {
+    body {
+        padding: 0;
+    }
+    .main-container {
+        padding: 10px;
+        max-width: 100%;
+    }
+    .container {
+        padding: 15px;
+    }
+    h1 {
+        font-size: 28px;
+    }
+    .nav-btn {
+        font-size: 16px;
+        padding: 10px 5px;
+    }
+    .option-btn {
+        width: 50px;
+        height: 50px;
+        font-size: 20px;
+    }
+    .math-problem {
+        font-size: 48px;
+    }
+    #answer-input {
+        height: 70px;
+        font-size: 40px;
+    }
+    #keypad {
+        gap: 8px;
+    }
+    .keypad-btn {
+        height: 55px;
+        font-size: 22px;
+    }
+    .icon-group {
+        width: 120px;
+        font-size: 24px;
+    }
+    .table-cell {
+        font-size: 14px;
+        padding: 8px 5px;
     }
 }
-
-// --- 3.2 頁面切換邏輯 ---
-function showQuizPage() {
-    quizSection.classList.remove('hidden');
-    tableSection.classList.add('hidden');
-    navQuizBtn.classList.add('active');
-    navTableBtn.classList.remove('active');
-    if (player && typeof player.pauseVideo === 'function' && player.getPlayerState() === YT.PlayerState.PLAYING) {
-        player.pauseVideo();
-    }
-}
-
-function showTablePage() {
-    quizSection.classList.add('hidden');
-    tableSection.classList.remove('hidden');
-    navQuizBtn.classList.remove('active');
-    navTableBtn.classList.add('active');
-}
-
-// --- 3.3 乘數表生成邏輯 ---
-function generateMultiplicationTable() {
-    multiplicationTable.innerHTML = '';
-    for (let i = 1; i <= 9; i++) {
-        for (let j = 1; j <= 9; j++) {
-            const cell = document.createElement('div');
-            cell.classList.add('table-cell');
-            cell.textContent = `${i}×${j}=${i*j}`;
-            multiplicationTable.appendChild(cell);
-        }
-    }
-}
-
-// --- 3.4 測驗邏輯 ---
-function startQuiz() {
-    score = 0;
-    questionCounter = 0;
-    scoreEl.textContent = score;
-    endScreen.classList.add('hidden');
-    gameScreen.style.opacity = 1;
-    generateProblem();
-}
-
-function endQuiz() {
-    finalScoreValueEl.textContent = `${score} / ${QUESTIONS_PER_ROUND}`;
-    endScreen.classList.remove('hidden');
-    gameScreen.style.opacity = 0.5;
-}
-
-function generateProblem() {
-    if (questionCounter >= QUESTIONS_PER_ROUND) {
-        endQuiz();
-        return;
-    }
-    questionCounter++;
-    questionCountEl.textContent = questionCounter;
-    icons1El.innerHTML = '';
-    icons2El.innerHTML = '';
-    const currentIcon = icons[Math.floor(Math.random() * icons.length)];
-    let num1, num2;
-    let operation = currentOperation;
-    if (operation === 'random') {
-        const operations = ['add', 'subtract', 'multiply', 'divide'];
-        operation = operations[Math.floor(Math.random() * operations.length)];
-    }
-    switch (operation) {
-        case 'add':
-            num1 = Math.floor(Math.random() * 10);
-            num2 = Math.floor(Math.random() * 10);
-            operatorEl.textContent = '+';
-            opSymbolEl.textContent = '+';
-            correctAnswer = num1 + num2;
-            break;
-        case 'subtract':
-            num1 = Math.floor(Math.random() * 10);
-            num2 = Math.floor(Math.random() * 10);
-            if (num1 < num2) { [num1, num2] = [num2, num1]; }
-            operatorEl.textContent = '-';
-            opSymbolEl.textContent = '-';
-            correctAnswer = num1 - num2;
-            break;
-        case 'multiply':
-            num1 = Math.floor(Math.random() * 10);
-            num2 = Math.floor(Math.random() * 10);
-            operatorEl.textContent = '×';
-            opSymbolEl.textContent = '×';
-            correctAnswer = num1 * num2;
-            break;
-        case 'divide':
-            const quotient = Math.floor(Math.random() * 9) + 1;
-            num2 = Math.floor(Math.random() * 9) + 1;
-            num1 = quotient * num2;
-            if (num1 === num2) {
-                num2 = Math.floor(Math.random() * (num2 - 1)) + 1;
-                if (num2 > 1) { num1 = quotient * num2; }
-            }
-            operatorEl.textContent = '÷';
-            opSymbolEl.textContent = '÷';
-            correctAnswer = quotient;
-            break;
-    }
-    num1El.textContent = num1;
-    num2El.textContent = num2;
-    const iconSize = (num1 > 20 || num2 > 20) ? '20px' : '30px';
-    icons1El.style.fontSize = iconSize;
-    icons2El.style.fontSize = iconSize;
-    for (let i = 0; i < num1; i++) { icons1El.innerHTML += `<span>${currentIcon}</span>`; }
-    for (let i = 0; i < num2; i++) { icons2El.innerHTML += `<span>${currentIcon}</span>`; }
-    answerInput.value = '';
-    feedbackEl.textContent = '';
-}
-
-function checkAnswer() {
-    answerInput.classList.remove('shake');
-    scoreEl.classList.remove('correct-animation');
-    const userAnswer = parseInt(answerInput.value, 10);
-    if (isNaN(userAnswer) || answerInput.value === '') {
-        feedbackEl.textContent = '請先輸入答案哦！';
-        feedbackEl.style.color = 'orange';
-        answerInput.classList.add('shake');
-        return;
-    }
-    if (userAnswer === correctAnswer) {
-        feedbackEl.textContent = encouragements[Math.floor(Math.random() * encouragements.length)];
-        feedbackEl.style.color = '#2ecc71';
-        score++;
-        scoreEl.textContent = score;
-        scoreEl.classList.add('correct-animation');
-        setTimeout(() => {
-            generateProblem();
-            scoreEl.classList.remove('correct-animation');
-        }, 1200);
-    } else {
-        feedbackEl.textContent = '答錯了，再試一次！';
-        feedbackEl.style.color = '#e74c3c';
-        answerInput.classList.add('shake');
-        setTimeout(() => { answerInput.value = ''; }, 1000);
-    }
-}
-
-// ====[ 4. 設定事件監聽 ]====
-
-// --- 4.1 導覽按鈕 ---
-navQuizBtn.addEventListener('click', showQuizPage);
-navTableBtn.addEventListener('click', showTablePage);
-
-// --- 4.2 播放九因歌按鈕 ---
-playChantBtn.addEventListener('click', () => {
-    if (!player || typeof player.getPlayerState !== 'function') {
-        alert("YouTube 播放器尚未準備好，請稍候再試。");
-        return;
-    }
-    const playerState = player.getPlayerState();
-    if (playerState === YT.PlayerState.PLAYING) {
-        player.pauseVideo();
-    } else {
-        player.playVideo();
-    }
-});
-
-// --- 4.3 測驗相關按鈕 ---
-keypad.addEventListener('click', (event) => {
-    const target = event.target;
-    if (!target.matches('.keypad-btn')) { return; }
-    const key = target.dataset.key;
-    if (key === 'check') { checkAnswer(); }
-    else if (key === 'clear') { answerInput.value = ''; }
-    else if (key === 'backspace') { answerInput.value = answerInput.value.slice(0, -1); }
-    else { if (answerInput.value.length < 3) { answerInput.value += key; } }
-});
-
-optionBtns.forEach(btn => {
-    btn.addEventListener('click', () => {
-        optionBtns.forEach(b => b.classList.remove('active'));
-        btn.classList.add('active');
-        currentOperation = btn.dataset.op;
-        startQuiz();
-    });
-});
-
-restartBtn.addEventListener('click', startQuiz);
-
-// ====[ 5. 初始設定 ]====
-function initialize() {
-    showQuizPage();
-    generateMultiplicationTable();
-    startQuiz();
-}
-
-// 由於 onYouTubeIframeAPIReady 是由外部 API 呼叫，我們需要確保它在 global scope
-// 而 initialize 則在 DOM 載入後執行比較保險
-window.addEventListener('DOMContentLoaded', initialize);
